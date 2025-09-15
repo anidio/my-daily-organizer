@@ -3,7 +3,7 @@ import './ActivityList.css';
 import axios from 'axios';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
-const ActivityList = ({ userId, activities, setActivities, onDataChange }) => {
+const ActivityList = ({ userId, activities,setActivities, onDataChange }) => {
     const [newActivityTitle, setNewActivityTitle] = useState('');
     const [editingId, setEditingId] = useState(null);
     const [editingTitle, setEditingTitle] = useState('');

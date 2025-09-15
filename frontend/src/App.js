@@ -28,7 +28,13 @@ function App() {
         axios.get(`/api/activities/${userId}`),
         axios.get(`/api/nutrition/${userId}`)
       ]);
-      setActivities(activitiesResponse.data);
+
+      if (Array.isArray(activitiesResponse.data)) {
+        setActivities(activitiesResponse.data);
+      } else {
+        setActivities([]);
+      }
+
       if (nutritionResponse.data) {
         setNutrition(nutritionResponse.data);
       } else {
@@ -36,6 +42,8 @@ function App() {
       }
     } catch (error) {
       console.error('Erro ao buscar dados:', error);
+      setActivities([]);
+      setNutrition({});
     }
   }, [userId]);
 
@@ -79,7 +87,7 @@ function App() {
           <ActivityList 
             userId={userId} 
             activities={activities} 
-            setActivities={setActivities} // ESTA É A LINHA QUE ESTAVA FALTANDO
+            setActivities={setActivities} // A LINHA QUE ESTAVA FALTANDO
             onDataChange={fetchData} 
           />
         </main>
