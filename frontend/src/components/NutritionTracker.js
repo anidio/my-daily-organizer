@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './NutritionTracker.css';
 
-const GOALS_STORAGE_KEY = 'goals';
+const GOALS_STORAGE_KEY = 'dailyGoals';
 const WATER_STORAGE_KEY = 'currentWater';
 const CALORIES_STORAGE_KEY = 'currentCalories';
 
 const NutritionTracker = () => {
-    const [goals, setGoals] = useState(() => {
-        const storedGoals = localStorage.getItem(GOALS_STORAGE_KEY);
-        return storedGoals ? JSON.parse(storedGoals) : { waterGoal: 0, caloriesGoal: 0 };
-    });
+    const [goals, setGoals] = useState({});
     const [currentWater, setCurrentWater] = useState(() => {
         const storedWater = localStorage.getItem(WATER_STORAGE_KEY);
         return storedWater ? parseInt(storedWater) : 0;
@@ -24,17 +21,13 @@ const NutritionTracker = () => {
     useEffect(() => {
         const handleStorageChange = () => {
             const storedWater = localStorage.getItem(WATER_STORAGE_KEY);
-            if (storedWater) {
-                setCurrentWater(parseInt(storedWater));
-            }
+            setCurrentWater(storedWater ? parseInt(storedWater) : 0);
+            
             const storedCalories = localStorage.getItem(CALORIES_STORAGE_KEY);
-            if (storedCalories) {
-                setCurrentCalories(parseInt(storedCalories));
-            }
+            setCurrentCalories(storedCalories ? parseInt(storedCalories) : 0);
+            
             const storedGoals = localStorage.getItem(GOALS_STORAGE_KEY);
-            if (storedGoals) {
-                setGoals(JSON.parse(storedGoals));
-            }
+            setGoals(storedGoals ? JSON.parse(storedGoals) : {});
         };
         window.addEventListener('localStorageUpdated', handleStorageChange);
         return () => window.removeEventListener('localStorageUpdated', handleStorageChange);
@@ -54,13 +47,18 @@ const NutritionTracker = () => {
     };
 
     const handleSaveGoals = () => {
-        saveStateToLocalStorage(GOALS_STORAGE_KEY, goals);
+        // Salva apenas as metas de nutrição no objeto goals
+        const updatedGoals = {
+            ...JSON.parse(localStorage.getItem(GOALS_STORAGE_KEY) || '{}'),
+            waterGoal: goals.waterGoal,
+            caloriesGoal: goals.caloriesGoal
+        };
+        saveStateToLocalStorage(GOALS_STORAGE_KEY, updatedGoals);
         toggleModal();
     };
 
     const handleAddWater = () => {
         const newWater = currentWater + 250;
-        setCurrentWater(newWater);
         localStorage.setItem(WATER_STORAGE_KEY, newWater);
         window.dispatchEvent(new Event('localStorageUpdated'));
     };
@@ -73,7 +71,6 @@ const NutritionTracker = () => {
         const newCaloriesValue = parseInt(calorieInput, 10);
         if (!isNaN(newCaloriesValue) && newCaloriesValue > 0) {
             const newTotalCalories = currentCalories + newCaloriesValue;
-            setCurrentCalories(newTotalCalories);
             localStorage.setItem(CALORIES_STORAGE_KEY, newTotalCalories);
             setCalorieInput('');
             window.dispatchEvent(new Event('localStorageUpdated'));
@@ -94,7 +91,7 @@ const NutritionTracker = () => {
             <div className="counters-wrapper">
                 <div className="counter">
                     <h4>Água</h4>
-                    <p>{currentWater}ml / {goals.waterGoal}ml</p>
+                    <p>{currentWater}ml / {goals.waterGoal || 0}ml</p>
                     <button onClick={handleAddWater}>+ 250ml</button>
                     <div className="counter-progress-bar-bg">
                         <div
@@ -105,7 +102,7 @@ const NutritionTracker = () => {
                 </div>
                 <div className="counter">
                     <h4>Calorias</h4>
-                    <p>{currentCalories}Kcal / {goals.caloriesGoal}Kcal</p>
+                    <p>{currentCalories}Kcal / {goals.caloriesGoal || 0}Kcal</p>
                     <div className="calorie-input-group">
                         <input
                             type="number"
@@ -129,9 +126,9 @@ const NutritionTracker = () => {
                     <div className="modal-content">
                         <h3>Definir Metas</h3>
                         <label>Meta de Água (ml):</label>
-                        <input type="number" name="waterGoal" value={goals.waterGoal} onChange={handleGoalChange} />
+                        <input type="number" name="waterGoal" value={goals.waterGoal || ''} onChange={handleGoalChange} />
                         <label>Meta de Calorias (kcal):</label>
-                        <input type="number" name="caloriesGoal" value={goals.caloriesGoal} onChange={handleGoalChange} />
+                        <input type="number" name="caloriesGoal" value={goals.caloriesGoal || ''} onChange={handleGoalChange} />
                         <div className="modal-actions">
                             <button onClick={handleSaveGoals}>Salvar</button>
                             <button onClick={toggleModal}>Cancelar</button>

@@ -4,6 +4,7 @@ import ActivityList from './components/ActivityList';
 import NutritionTracker from './components/NutritionTracker';
 import ProgressTracker from './components/ProgressTracker';
 
+// A função para apagar os dados do localStorage diariamente
 const clearDailyData = () => {
     const LAST_VISIT_DATE_KEY = 'lastVisitDate';
     const today = new Date().toDateString();
@@ -31,38 +32,55 @@ function App() {
   
   const calculateTotalProgress = () => {
       const activities = JSON.parse(localStorage.getItem('activities')) || [];
-      const progressData = JSON.parse(localStorage.getItem('progress')) || {};
+      const dailyGoals = JSON.parse(localStorage.getItem('dailyGoals')) || {};
       const currentWater = parseInt(localStorage.getItem('currentWater')) || 0;
       const currentCalories = parseInt(localStorage.getItem('currentCalories')) || 0;
-      const goals = progressData.goals || { waterGoal: 0, caloriesGoal: 0 };
       
-      const totalPoints = 4;
-      let achievedPoints = 0;
+      let totalPercentage = 0;
+      let totalGoals = 0;
       
-      if (goals.waterGoal > 0 && currentWater >= goals.waterGoal) {
-          achievedPoints += 1;
+      // 1. Cálculo do progresso das atividades
+      if (activities.length > 0) {
+          const completedActivities = activities.filter(act => act.completed).length;
+          const activitiesProgress = (completedActivities / activities.length) * 100;
+          totalPercentage += activitiesProgress;
+          totalGoals++;
       }
-      if (goals.caloriesGoal > 0 && currentCalories <= goals.caloriesGoal) {
-          achievedPoints += 1;
-      }
       
-      const completedActivities = activities.filter(act => act.completed).length;
-      if (activities.length > 0 && completedActivities === activities.length) {
-          achievedPoints += 1;
+      // 2. Cálculo do progresso da água
+      if (dailyGoals.waterGoal > 0) {
+          const waterProgress = Math.min(100, (currentWater / dailyGoals.waterGoal) * 100);
+          totalPercentage += waterProgress;
+          totalGoals++;
       }
 
-      if (progressData.mood && progressData.sleepQuality && progressData.wakeUpTime) {
-          achievedPoints += 1;
+      // 3. Cálculo do progresso das calorias
+      if (dailyGoals.caloriesGoal > 0) {
+          const caloriesProgress = Math.min(100, (currentCalories / dailyGoals.caloriesGoal) * 100);
+          totalPercentage += caloriesProgress;
+          totalGoals++;
       }
       
-      const progressPercentage = (achievedPoints / totalPoints) * 100;
-      setTotalProgress(progressPercentage);
+      // Média total, se houver pelo menos uma meta
+      if (totalGoals > 0) {
+          setTotalProgress(totalPercentage / totalGoals);
+      } else {
+          setTotalProgress(0);
+      }
+  };
+
+  const handleNewDay = () => {
+      localStorage.clear();
+      window.dispatchEvent(new Event('localStorageUpdated'));
   };
 
   return (
     <div className="App">
       <header className="app-header">
         <h1>My Daily Organizer</h1>
+        <button className="new-day-btn" onClick={handleNewDay}>
+          Iniciar Novo Dia
+        </button>
       </header>
       <main className="app-main-layout">
         <div className="left-column">

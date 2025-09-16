@@ -25,9 +25,6 @@ body {
   gap: 20px;
   padding: 20px;
   flex-grow: 1;
-  /* Linhas comentadas para que o layout ocupe toda a largura */
-  /* max-width: 1200px; */
-  /* margin: 0 auto; */
 }
 
 .left-column {
@@ -45,12 +42,31 @@ body {
 .app-header {
   padding: 20px;
   border-bottom: 1px solid #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .app-header h1 {
   margin: 0;
   font-size: 2rem;
   color: #00C8FF;
+}
+
+/* Estilo para o novo botão "Iniciar Novo Dia" */
+.new-day-btn {
+  background-color: #00C8FF;
+  color: #121212;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.new-day-btn:hover {
+  background-color: #00A6D6;
 }
 
 footer {
@@ -68,5 +84,10 @@ footer {
     
     .left-column {
         width: 100%;
+    }
+
+    .app-header {
+      flex-direction: column;
+      gap: 10px;
     }
 }

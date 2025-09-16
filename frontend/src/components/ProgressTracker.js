@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ProgressTracker.css';
 
-const PROGRESS_STORAGE_KEY = 'progress';
+const GOALS_STORAGE_KEY = 'dailyGoals';
 
 const moodEmojis = {
     'ótimo': '😊',
@@ -20,48 +20,49 @@ const sleepEmojis = {
 };
 
 const ProgressTracker = ({ totalProgress }) => {
-  const [progress, setProgress] = useState(null);
+  const [goals, setGoals] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    const storedProgress = localStorage.getItem(PROGRESS_STORAGE_KEY);
-    if (storedProgress) {
-      setProgress(JSON.parse(storedProgress));
-    } else {
-      setProgress({});
-    }
+    const handleStorageChange = () => {
+        const storedGoals = localStorage.getItem(GOALS_STORAGE_KEY);
+        setGoals(storedGoals ? JSON.parse(storedGoals) : {});
+    };
     
+    handleStorageChange();
     window.addEventListener('localStorageUpdated', handleStorageChange);
     return () => {
         window.removeEventListener('localStorageUpdated', handleStorageChange);
     };
   }, []);
   
-  const handleStorageChange = () => {
-    const storedProgress = localStorage.getItem(PROGRESS_STORAGE_KEY);
-    setProgress(storedProgress ? JSON.parse(storedProgress) : {});
-  };
-
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setProgress({ ...progress, [name]: value });
+    setGoals({ ...goals, [name]: value });
   };
 
   const handleSelectorChange = (name, value) => {
-    setProgress({ ...progress, [name]: value });
+    setGoals({ ...goals, [name]: value });
   };
 
   const saveProgress = () => {
-    localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(progress));
+    // Salva apenas as metas de progresso no objeto centralizado
+    const updatedGoals = {
+        ...JSON.parse(localStorage.getItem(GOALS_STORAGE_KEY) || '{}'),
+        wakeUpTime: goals.wakeUpTime,
+        mood: goals.mood,
+        sleepQuality: goals.sleepQuality
+    };
+    localStorage.setItem(GOALS_STORAGE_KEY, JSON.stringify(updatedGoals));
     window.dispatchEvent(new Event('localStorageUpdated'));
     toggleModal();
   };
 
-  if (!progress) {
+  if (!goals) {
     return (
       <div className="progress-tracker">
         <p>Carregando dados...</p>
@@ -89,22 +90,22 @@ const ProgressTracker = ({ totalProgress }) => {
       <div className="progress-details">
         <h4>Detalhes do Dia</h4>
         <div className="details-list">
-          {progress.wakeUpTime && (
+          {goals.wakeUpTime && (
             <div className="detail-item">
               <span className="detail-label">Hora que acordou:</span>
-              <span className="detail-value">{progress.wakeUpTime}</span>
+              <span className="detail-value">{goals.wakeUpTime}</span>
             </div>
           )}
-          {progress.mood && (
+          {goals.mood && (
             <div className="detail-item">
               <span className="detail-label">Humor:</span>
-              <span className="detail-value">{moodEmojis[progress.mood] || ''} {progress.mood}</span>
+              <span className="detail-value">{moodEmojis[goals.mood] || ''} {goals.mood}</span>
             </div>
           )}
-          {progress.sleepQuality && (
+          {goals.sleepQuality && (
             <div className="detail-item">
               <span className="detail-label">Qualidade do sono:</span>
-              <span className="detail-value">{sleepEmojis[progress.sleepQuality] || ''} {progress.sleepQuality}</span>
+              <span className="detail-value">{sleepEmojis[goals.sleepQuality] || ''} {goals.sleepQuality}</span>
             </div>
           )}
         </div>
@@ -118,7 +119,7 @@ const ProgressTracker = ({ totalProgress }) => {
             <input 
               type="time" 
               name="wakeUpTime" 
-              value={progress.wakeUpTime || ''}
+              value={goals.wakeUpTime || ''}
               onChange={handleInputChange} 
             />
             
@@ -127,7 +128,7 @@ const ProgressTracker = ({ totalProgress }) => {
               {Object.entries(moodEmojis).map(([key, emoji]) => (
                 <span
                   key={key}
-                  className={`selector-item ${progress.mood === key ? 'selected' : ''}`}
+                  className={`selector-item ${goals.mood === key ? 'selected' : ''}`}
                   onClick={() => handleSelectorChange('mood', key)}
                 >
                   {emoji} {key}
@@ -140,7 +141,7 @@ const ProgressTracker = ({ totalProgress }) => {
               {Object.entries(sleepEmojis).map(([key, emoji]) => (
                 <span
                   key={key}
-                  className={`selector-item ${progress.sleepQuality === key ? 'selected' : ''}`}
+                  className={`selector-item ${goals.sleepQuality === key ? 'selected' : ''}`}
                   onClick={() => handleSelectorChange('sleepQuality', key)}
                 >
                   {emoji} {key}
