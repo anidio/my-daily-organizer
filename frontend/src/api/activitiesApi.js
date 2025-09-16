@@ -1,10 +1,8 @@
-import axios from 'axios';
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
+import api from '../services/Api';
 
 export const getActivitiesByUserId = async (userId) => {
     try {
-        const response = await axios.get(`${API_URL}/${userId}`);
+        const response = await api.get(`/api/activities/${userId}`);
         return response.data;
     } catch (error) {
         console.error('Erro ao buscar atividades:', error);
@@ -14,7 +12,7 @@ export const getActivitiesByUserId = async (userId) => {
 
 export const createActivity = async (activity) => {
     try {
-        const response = await axios.post(API_URL, activity);
+        const response = await api.post('/api/activities', activity);
         return response.data;
     } catch (error) {
         console.error('Erro ao criar atividade:', error);

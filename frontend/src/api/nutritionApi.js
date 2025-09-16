@@ -1,11 +1,8 @@
-import axios from 'axios';
+import api from '../services/Api';
 
-const API_URL = '/api/nutrition';
-
-// Funções para a API de Nutrição
 export const getNutritionByUserId = async (userId) => {
     try {
-        const response = await axios.get(`${API_URL}/${userId}`);
+        const response = await api.get(`/api/nutrition/${userId}`);
         return response.data;
     } catch (error) {
         console.error('Erro ao buscar dados de nutrição:', error);
@@ -15,7 +12,7 @@ export const getNutritionByUserId = async (userId) => {
 
 export const saveNutrition = async (nutrition) => {
     try {
-        const response = await axios.post(API_URL, nutrition);
+        const response = await api.post('/api/nutrition', nutrition);
         return response.data;
     } catch (error) {
         console.error('Erro ao salvar dados de nutrição:', error);

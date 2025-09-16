@@ -4,7 +4,7 @@ import NutritionTracker from './components/NutritionTracker';
 import ActivityList from './components/ActivityList';
 import ProgressTracker from './components/ProgressTracker';
 import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
+import api from './services/Api';
 
 function App() {
   const [userId, setUserId] = useState(null);
@@ -25,8 +25,8 @@ function App() {
 
     try {
       const [activitiesResponse, nutritionResponse] = await Promise.all([
-        axios.get(`/api/activities/${userId}`),
-        axios.get(`/api/nutrition/${userId}`)
+        api.get(`/api/activities/${userId}`),
+        api.get(`/api/nutrition/${userId}`)
       ]);
 
       if (Array.isArray(activitiesResponse.data)) {

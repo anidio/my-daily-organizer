@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './ActivityList.css';
-import axios from 'axios';
+import api from '../services/Api';
+
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 
 const ActivityList = ({ userId, activities,setActivities, onDataChange }) => {
@@ -20,7 +21,7 @@ const ActivityList = ({ userId, activities,setActivities, onDataChange }) => {
                 completed: false,
                 position: activities.length
             };
-            await axios.post('/api/activities', newActivity);
+            await api.post('/api/activities', newActivity);
             onDataChange();
             setNewActivityTitle('');
         } catch (error) {
@@ -40,7 +41,7 @@ const ActivityList = ({ userId, activities,setActivities, onDataChange }) => {
         setActivities(activities.map(act => act.id === id ? updatedActivity : act));
 
         try {
-            await axios.put(`/api/activities/${id}`, updatedActivity);
+            await api.put(`/api/activities/${id}`, updatedActivity);
         } catch (error) {
             console.error('Erro ao atualizar atividade:', error);
         }
@@ -48,7 +49,7 @@ const ActivityList = ({ userId, activities,setActivities, onDataChange }) => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`/api/activities/${id}`);
+            await api.delete(`/api/activities/${id}`);
             onDataChange();
         } catch (error) {
             console.error('Erro ao deletar atividade:', error);
@@ -70,7 +71,7 @@ const ActivityList = ({ userId, activities,setActivities, onDataChange }) => {
         setEditingId(null);
 
         try {
-            await axios.put(`/api/activities/${activity.id}`, updatedActivity);
+            await api.put(`/api/activities/${activity.id}`, updatedActivity);
         } catch (error) {
             console.error('Erro ao salvar edição:', error);
         }
@@ -92,7 +93,7 @@ const ActivityList = ({ userId, activities,setActivities, onDataChange }) => {
         setActivities(reorderedActivities);
 
         try {
-            await axios.put(`/api/activities/reorder`, reorderedActivities);
+            await api.put(`/api/activities/reorder`, reorderedActivities);
         } catch (error) {
             console.error('Erro ao reordenar atividades:', error);
         }
