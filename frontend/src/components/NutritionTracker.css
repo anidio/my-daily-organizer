@@ -200,3 +200,38 @@
 .calorie-input-group button:hover {
     background-color: #00A6D6;
 }
+
+/* Ajustes para ecrãs menores */
+@media (max-width: 768px) {
+    .nutrition-tracker {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+
+    .nutrition-tracker h3 {
+        font-size: 1.2rem;
+    }
+
+    .counter h4 {
+        font-size: 0.9rem;
+    }
+
+    .counter p {
+        font-size: 1.2rem;
+    }
+
+    .calorie-input-group {
+        flex-direction: column;
+    }
+
+    .calorie-input-group input,
+    .calorie-input-group button {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .modal-content {
+        padding: 20px;
+        width: 90%;
+    }
+}

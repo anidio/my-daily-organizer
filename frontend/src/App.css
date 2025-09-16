@@ -84,10 +84,22 @@ footer {
     
     .left-column {
         width: 100%;
+        /* Adicionando margem inferior para separar do próximo componente */
+        margin-bottom: 15px;
     }
 
     .app-header {
       flex-direction: column;
       gap: 10px;
+      padding: 15px;
+    }
+    
+    .app-header h1 {
+        font-size: 1.5rem; /* Diminui o tamanho do título em telas menores */
+    }
+
+    .new-day-btn {
+        padding: 8px 16px; /* Diminui o botão */
+        font-size: 0.9rem;
     }
 }

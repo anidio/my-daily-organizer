@@ -111,3 +111,43 @@
   background-color: #282828 !important;
   box-shadow: 0 5px 15px rgba(0, 200, 255, 0.4);
 }
+
+/* Ajustes para ecrãs menores */
+@media (max-width: 768px) {
+  .activity-list {
+    padding: 15px;
+  }
+  
+  .activity-list h2 {
+    font-size: 1.2rem;
+  }
+  
+  .activity-list form {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .activity-list form input {
+    font-size: 0.9rem;
+  }
+  
+  .activity-list form button {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+  
+  .activity-list li {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .activity-list li span {
+    margin-bottom: 10px;
+  }
+
+  .activity-list li div {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

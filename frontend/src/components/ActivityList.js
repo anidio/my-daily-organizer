@@ -10,6 +10,13 @@ const ActivityList = () => {
 
   useEffect(() => {
     fetchActivities();
+    const handleStorageChange = () => {
+      fetchActivities();
+    };
+    window.addEventListener('localStorageUpdated', handleStorageChange);
+    return () => {
+      window.removeEventListener('localStorageUpdated', handleStorageChange);
+    };
   }, []);
 
   const fetchActivities = async () => {

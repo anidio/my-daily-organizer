@@ -177,3 +177,26 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+/* Ajustes para ecrãs menores */
+@media (max-width: 768px) {
+  .progress-tracker {
+    padding: 15px;
+  }
+  
+  .progress-tracker h2 {
+    font-size: 1.2rem;
+  }
+  
+  .progress-tracker .progress-summary p {
+    font-size: 1.8rem;
+  }
+  
+  .progress-details h4 {
+    font-size: 1rem;
+  }
+  
+  .progress-details .detail-item {
+    padding: 6px 8px;
+  }
+}
