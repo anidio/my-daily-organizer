@@ -1,97 +1,81 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
-import NutritionTracker from './components/NutritionTracker';
 import ActivityList from './components/ActivityList';
+import NutritionTracker from './components/NutritionTracker';
 import ProgressTracker from './components/ProgressTracker';
-import { v4 as uuidv4 } from 'uuid';
-import api from './services/Api';
+
+const clearDailyData = () => {
+    const LAST_VISIT_DATE_KEY = 'lastVisitDate';
+    const today = new Date().toDateString();
+    const lastVisitDate = localStorage.getItem(LAST_VISIT_DATE_KEY);
+
+    if (lastVisitDate !== today) {
+        localStorage.clear();
+        localStorage.setItem(LAST_VISIT_DATE_KEY, today);
+    }
+};
 
 function App() {
-  const [userId, setUserId] = useState(null);
-  const [activities, setActivities] = useState([]);
-  const [nutrition, setNutrition] = useState({});
+  const [totalProgress, setTotalProgress] = useState(0);
 
   useEffect(() => {
-    let storedUserId = localStorage.getItem('myDailyOrganizerUserId');
-    if (!storedUserId) {
-      storedUserId = uuidv4();
-      localStorage.setItem('myDailyOrganizerUserId', storedUserId);
-    }
-    setUserId(storedUserId);
+      clearDailyData();
+      calculateTotalProgress();
+      
+      const updateHandler = () => calculateTotalProgress();
+      window.addEventListener('localStorageUpdated', updateHandler);
+      return () => {
+          window.removeEventListener('localStorageUpdated', updateHandler);
+      };
   }, []);
-
-  const fetchData = useCallback(async () => {
-    if (!userId) return;
-
-    try {
-      const [activitiesResponse, nutritionResponse] = await Promise.all([
-        api.get(`/api/activities/${userId}`),
-        api.get(`/api/nutrition/${userId}`)
-      ]);
-
-      if (Array.isArray(activitiesResponse.data)) {
-        setActivities(activitiesResponse.data);
-      } else {
-        setActivities([]);
+  
+  const calculateTotalProgress = () => {
+      const activities = JSON.parse(localStorage.getItem('activities')) || [];
+      const progressData = JSON.parse(localStorage.getItem('progress')) || {};
+      const currentWater = parseInt(localStorage.getItem('currentWater')) || 0;
+      const currentCalories = parseInt(localStorage.getItem('currentCalories')) || 0;
+      const goals = progressData.goals || { waterGoal: 0, caloriesGoal: 0 };
+      
+      const totalPoints = 4;
+      let achievedPoints = 0;
+      
+      if (goals.waterGoal > 0 && currentWater >= goals.waterGoal) {
+          achievedPoints += 1;
+      }
+      if (goals.caloriesGoal > 0 && currentCalories <= goals.caloriesGoal) {
+          achievedPoints += 1;
+      }
+      
+      const completedActivities = activities.filter(act => act.completed).length;
+      if (activities.length > 0 && completedActivities === activities.length) {
+          achievedPoints += 1;
       }
 
-      if (nutritionResponse.data) {
-        setNutrition(nutritionResponse.data);
-      } else {
-        setNutrition({});
+      if (progressData.mood && progressData.sleepQuality && progressData.wakeUpTime) {
+          achievedPoints += 1;
       }
-    } catch (error) {
-      console.error('Erro ao buscar dados:', error);
-      setActivities([]);
-      setNutrition({});
-    }
-  }, [userId]);
-
-  useEffect(() => {
-    fetchData();
-  }, [userId, fetchData]);
-
-  const calculateProgress = () => {
-    const completedActivities = activities.filter(act => act.completed).length;
-    const totalActivities = activities.length;
-
-    let activityProgress = 0;
-    if (totalActivities > 0) {
-      activityProgress = (completedActivities / totalActivities) * 50;
-    }
-
-    let nutritionProgress = 0;
-    if (nutrition.requiredWater > 0) {
-        nutritionProgress += (nutrition.consumedWater / nutrition.requiredWater) * 25;
-    }
-    if (nutrition.requiredKcal > 0) {
-        nutritionProgress += (nutrition.consumedKcal / nutrition.requiredKcal) * 25;
-    }
-
-    const totalProgress = activityProgress + nutritionProgress;
-    return Math.min(totalProgress, 100).toFixed(1);
+      
+      const progressPercentage = (achievedPoints / totalPoints) * 100;
+      setTotalProgress(progressPercentage);
   };
-
-  if (!userId) {
-    return <div>Carregando...</div>;
-  }
 
   return (
     <div className="App">
-      <div className="main-content">
-        <aside className="sidebar">
-          <NutritionTracker userId={userId} nutrition={nutrition} onDataChange={fetchData} />
-          <ProgressTracker progress={calculateProgress()} nutrition={nutrition} />
-        </aside>
-        <main className="activity-list-wrapper">
-          <ActivityList 
-            userId={userId} 
-            activities={activities} 
-            setActivities={setActivities} // A LINHA QUE ESTAVA FALTANDO
-            onDataChange={fetchData} 
-          />
-        </main>
-      </div>
+      <header className="app-header">
+        <h1>My Daily Organizer</h1>
+      </header>
+      <main className="app-main-layout">
+        <div className="left-column">
+          <NutritionTracker />
+          <ProgressTracker totalProgress={totalProgress} />
+        </div>
+        <div className="right-column">
+          <ActivityList />
+        </div>
+      </main>
+      <footer>
+        <p>&copy; 2024 My Daily Organizer</p>
+      </footer>
     </div>
   );
 }

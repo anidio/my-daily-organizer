@@ -1,150 +1,113 @@
-.activity-container {
-    padding: 20px;
+/* Estilo para o container principal da lista de atividades */
+.activity-list {
     background-color: #1a1a1a;
+    color: #f0ff0f;
+    padding: 25px;
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 200, 255, 0.2);
     border: 1px solid #333;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
+    position: relative;
 }
 
-.title {
-    color: #00C8FF;
+.activity-list h2 {
     font-size: 1.5rem;
+    color: #00C8FF;
+    margin-top: 0;
     margin-bottom: 20px;
 }
 
-.add-form {
+/* Estilo para o formulário de adicionar atividade */
+.activity-list form {
     display: flex;
-    margin-bottom: 20px;
     gap: 10px;
+    margin-bottom: 20px;
 }
 
-.add-form input {
-    flex: 1;
-    padding: 12px;
-    background-color: #333;
-    border: 1px solid #555;
-    color: #fff;
+.activity-list input[type="text"] {
+    flex-grow: 1;
+    padding: 10px;
     border-radius: 5px;
-    font-size: 1rem;
+    border: 1px solid #555;
+    background-color: #333;
+    color: #fff;
 }
 
-.add-form button {
-    padding: 12px 20px;
+.activity-list form button {
     background-color: #00C8FF;
     color: #121212;
     border: none;
+    padding: 10px 20px;
     border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
     font-weight: bold;
-    flex-shrink: 0;
-}
-
-.activity-list {
-    list-style: none;
-    padding: 0;
-}
-
-.activity-item {
-    background-color: #2a2a2a;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-left: 5px solid #00C8FF;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: grab;
+    cursor: pointer;
     transition: background-color 0.3s ease;
-    flex-wrap: wrap;
 }
 
-.activity-item:hover {
-    background-color: #3a3a3a;
+.activity-list form button:hover {
+    background-color: #00A6D6;
 }
 
-.activity-item.completed {
-    background-color: #1a2a1a;
-    border-left-color: #28a745;
+/* Estilo para a lista de itens */
+.activity-list ul {
+    list-style: none; /* Remove os marcadores de lista padrão */
+    padding: 0;
+    margin: 0;
+}
+
+.activity-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1a1a1a;
+    padding: 15px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.activity-list li:last-child {
+    margin-bottom: 0;
+}
+
+.activity-list li:hover {
+    transform: translateY(-2px);
+}
+
+.activity-list li span {
+    flex-grow: 1;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.activity-list li.completed span {
     text-decoration: line-through;
     color: #888;
 }
 
-.activity-item span {
-    flex-grow: 1;
-    text-align: left;
-}
-
-.item-actions {
+.activity-list li div {
     display: flex;
     gap: 5px;
-    margin-left: auto;
-    flex-shrink: 0;
 }
 
-.item-actions button {
+.activity-list li button {
     background-color: #333;
     color: #fff;
     border: 1px solid #555;
     padding: 8px 12px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.item-actions button:hover {
+.activity-list li button:hover {
     background-color: #555;
+    border-color: #777;
 }
 
-.edit-input {
-    flex: 1;
-    padding: 5px;
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #555;
-    border-radius: 5px;
-}
-
-/* Regras de responsividade para telas menores que 768px */
-@media (max-width: 768px) {
-    .add-form {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .add-form input {
-        width: 100%;
-    }
-
-    .add-form button {
-        width: 100%;
-        height: 50px;
-        padding: 0;
-    }
-
-    .activity-item {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 10px;
-        gap: 10px;
-    }
-
-    .activity-item span {
-        width: 100%;
-    }
-
-    .item-actions {
-        width: 100%;
-        justify-content: space-between;
-        margin-left: 0;
-    }
-
-    .item-actions button {
-        flex-basis: 48%;
-        padding: 10px 0;
-        text-align: center;
-    }
+/* Estilo para o item que está a ser arrastado */
+.activity-list li.is-dragging {
+  background-color: #282828 !important;
+  box-shadow: 0 5px 15px rgba(0, 200, 255, 0.4);
 }

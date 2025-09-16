@@ -1,61 +1,72 @@
-html, body {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  overflow-x: hidden; /* Impede a rolagem horizontal */
-}
-
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
+/* Estilos gerais da página */
 body {
+  background-color: #121212;
+  color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
+  margin: 0;
+  padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #121212;
-  color: #E0E0E0;
 }
 
 .App {
+  text-align: center;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
-.main-content {
+/* Layout de duas colunas */
+.app-main-layout {
   display: flex;
   justify-content: center;
-  gap: 40px;
+  gap: 20px;
   padding: 20px;
-  align-items: flex-start;
+  flex-grow: 1;
+  /* Linhas comentadas para que o layout ocupe toda a largura */
+  /* max-width: 1200px; */
+  /* margin: 0 auto; */
 }
 
-.sidebar {
-  width: 300px;
-  min-width: 250px;
+.left-column {
   display: flex;
   flex-direction: column;
   gap: 20px;
+  width: 350px;
 }
 
-.activity-list-wrapper {
+.right-column {
   flex-grow: 1;
-  max-width: 800px;
 }
 
-/* Regras de responsividade para telas menores que 768px */
-@media (max-width: 768px) {
-    .main-content {
-        flex-direction: column;
-        gap: 20px;
-        padding: 10px;
-    }
+/* Estilos de cabeçalho e rodapé */
+.app-header {
+  padding: 20px;
+  border-bottom: 1px solid #333;
+}
 
-    .sidebar, .activity-list-wrapper {
+.app-header h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #00C8FF;
+}
+
+footer {
+  padding: 10px;
+  border-top: 1px solid #333;
+}
+
+/* Responsividade para ecrãs menores */
+@media (max-width: 768px) {
+    .app-main-layout {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .left-column {
         width: 100%;
-        min-width: unset;
     }
 }

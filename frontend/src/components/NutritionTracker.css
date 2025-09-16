@@ -169,3 +169,34 @@
         flex-basis: 45%;
     }
 }
+
+/* Estilo para alinhar o input e o botão de calorias */
+.calorie-input-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.calorie-input-group input {
+    flex-grow: 1;
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    background-color: #333;
+    color: #fff;
+}
+
+.calorie-input-group button {
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: #00C8FF;
+    color: #121212;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.calorie-input-group button:hover {
+    background-color: #00A6D6;
+}
