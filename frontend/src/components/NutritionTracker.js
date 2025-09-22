@@ -47,7 +47,6 @@ const NutritionTracker = () => {
     };
 
     const handleSaveGoals = () => {
-        // Salva apenas as metas de nutrição no objeto goals
         const updatedGoals = {
             ...JSON.parse(localStorage.getItem(GOALS_STORAGE_KEY) || '{}'),
             waterGoal: goals.waterGoal,
@@ -62,7 +61,7 @@ const NutritionTracker = () => {
         localStorage.setItem(WATER_STORAGE_KEY, newWater);
         window.dispatchEvent(new Event('localStorageUpdated'));
     };
-
+    
     const handleCalorieInputChange = (e) => {
         setCalorieInput(e.target.value);
     };
@@ -92,7 +91,7 @@ const NutritionTracker = () => {
                 <div className="counter">
                     <h4>Água</h4>
                     <p>{currentWater}ml / {goals.waterGoal || 0}ml</p>
-                    <button onClick={handleAddWater}>+ 250ml</button>
+                    <button className="add-water-btn" onClick={handleAddWater}>+ 250ml</button>
                     <div className="counter-progress-bar-bg">
                         <div
                             className="counter-progress-bar-fill"
@@ -110,7 +109,7 @@ const NutritionTracker = () => {
                             value={calorieInput}
                             onChange={handleCalorieInputChange}
                         />
-                        <button onClick={handleAddCalories}>Adicionar</button>
+                        <button onClick={handleAddCalories}>+</button>
                     </div>
                     <div className="counter-progress-bar-bg">
                         <div

@@ -1,215 +1,220 @@
 .nutrition-tracker {
-    background-color: #1a1a1a;
-    color: #f0f0f0;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 200, 255, 0.2);
-    border: 1px solid #333;
-    position: relative;
+  background-color: #1f2833;
+  color: #c5c6c7;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(102, 252, 241, 0.1);
+  border: 1px solid #45a29e;
+  position: relative;
+  text-align: left;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .nutrition-tracker h3 {
-    font-size: 1.5rem;
-    color: #00C8FF;
-    margin: 0;
+  font-size: 1.5rem;
+  color: #66fcf1;
+  margin: 0;
 }
 
 .settings-btn {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 1.5rem;
-    cursor: pointer;
+  background: none;
+  border: none;
+  color: #c5c6c7;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.settings-btn:hover {
+  color: #66fcf1;
 }
 
 .counters-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
 .counter {
-    text-align: left;
+  text-align: left;
+  padding: 15px;
+  background-color: #0b0c10;
+  border-radius: 8px;
+  border: 1px dashed #1f2833;
 }
 
 .counter h4 {
-    color: #888;
-    font-weight: 400;
-    margin: 0 0 5px 0;
+  color: #45a29e;
+  font-weight: 500;
+  margin: 0 0 5px 0;
+  font-size: 1rem;
 }
 
 .counter p {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #fff;
-    margin: 0;
-}
-
-.counter button {
-    background-color: #00C8FF;
-    color: #121212;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px;
-}
-
-.counter button:hover {
-    background-color: #00A6D6;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #66fcf1;
+  margin: 0;
 }
 
 .counter-progress-bar-bg {
-    height: 8px;
-    background-color: #333;
-    border-radius: 4px;
-    margin-top: 5px;
-    overflow: hidden;
+  height: 10px;
+  background-color: #333;
+  border-radius: 5px;
+  margin-top: 10px;
+  overflow: hidden;
 }
 
 .counter-progress-bar-fill {
-    height: 100%;
-    background-color: #28a745;
-    transition: width 0.5s ease-in-out;
+  height: 100%;
+  background-image: linear-gradient(to right, #45a29e, #66fcf1);
+  transition: width 0.5s ease-in-out;
 }
 
 /* Estilos do Modal */
 .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .modal-content {
-    background-color: #1a1a1a;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 200, 255, 0.4);
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    color: #fff;
+  background-color: #1a1a1a;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(102, 252, 241, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: #c5c6c7;
+  text-align: left;
+  border: 1px solid #45a29e;
 }
 
-.modal-content input, .modal-content select {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #555;
-    background-color: #333;
-    color: #fff;
+.modal-content h3 {
+  color: #66fcf1;
+  font-size: 1.6rem;
+  margin-bottom: 10px;
 }
 
-.selector-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+.modal-content label {
+  font-size: 1rem;
+  color: #45a29e;
+  margin-bottom: -5px;
 }
 
-.selector-item {
-    background-color: #333;
-    color: #fff;
-    border: 1px solid #555;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.selector-item.selected {
-    background-color: #00C8FF;
-    color: #121212;
-    border-color: #00C8FF;
-    font-weight: bold;
+.modal-content input,
+.modal-content select {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #45a29e;
+  background-color: #0b0c10;
+  color: #c5c6c7;
+  font-size: 1rem;
 }
 
 .modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 20px;
 }
 
 .modal-actions button {
-    background-color: #00C8FF;
-    color: #121212;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: #45a29e;
+  color: #0b0c10;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
-@media (max-width: 768px) {
-    .modal-content {
-        width: 90%;
-    }
-
-    .selector-group {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-
-    .selector-item {
-        flex-basis: 45%;
-    }
+.modal-actions button:hover {
+  background-color: #66fcf1;
 }
 
-/* Estilo para alinhar o input e o botão de calorias */
+/* Estilo para o grupo de input de calorias */
 .calorie-input-group {
     display: flex;
     gap: 10px;
     margin-top: 10px;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .calorie-input-group input {
     flex-grow: 1;
     padding: 8px;
     border-radius: 5px;
-    border: 1px solid #555;
-    background-color: #333;
-    color: #fff;
+    border: 1px solid #45a29e;
+    background-color: #0b0c10;
+    color: #c5c6c7;
+    -moz-appearance: textfield;
+    appearance: textfield;
+    box-sizing: border-box;
+    width: auto;
+}
+
+.calorie-input-group input::-webkit-outer-spin-button,
+.calorie-input-group input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .calorie-input-group button {
     padding: 8px 15px;
     border-radius: 5px;
     border: none;
-    background-color: #00C8FF;
-    color: #121212;
+    background-color: #45a29e;
+    color: #0b0c10;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    flex-shrink: 0;
+    box-sizing: border-box;
 }
 
 .calorie-input-group button:hover {
-    background-color: #00A6D6;
+    background-color: #66fcf1;
+}
+
+/* Estilo para o botão de adicionar água */
+.add-water-btn {
+    background-color: #45a29e;
+    color: #0b0c10;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
 }
 
 /* Ajustes para ecrãs menores */
 @media (max-width: 768px) {
     .nutrition-tracker {
-        padding: 15px;
-        margin-bottom: 15px;
+        padding: 20px;
     }
 
     .nutrition-tracker h3 {
-        font-size: 1.2rem;
+        font-size: 1.4rem;
     }
 
     .counter h4 {
@@ -217,15 +222,21 @@
     }
 
     .counter p {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
     }
-
+    
     .calorie-input-group {
         flex-direction: column;
+        align-items: stretch;
     }
-
+    
     .calorie-input-group input,
     .calorie-input-group button {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .add-water-btn {
         width: 100%;
         box-sizing: border-box;
     }

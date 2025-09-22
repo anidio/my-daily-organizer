@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import ActivityList from './components/ActivityList';
 import NutritionTracker from './components/NutritionTracker';
 import ProgressTracker from './components/ProgressTracker';
+import HourlyPlanner from './components/HourlyPlanner';
+import Footer from './components/Footer';
+import StatisticsDashboard from './components/StatisticsDashboard'; // Importando o novo componente
 
 // A função para apagar os dados do localStorage diariamente
 const clearDailyData = () => {
@@ -31,7 +33,7 @@ function App() {
   }, []);
   
   const calculateTotalProgress = () => {
-      const activities = JSON.parse(localStorage.getItem('activities')) || [];
+      const hourlyActivities = JSON.parse(localStorage.getItem('hourlyActivities')) || {};
       const dailyGoals = JSON.parse(localStorage.getItem('dailyGoals')) || {};
       const currentWater = parseInt(localStorage.getItem('currentWater')) || 0;
       const currentCalories = parseInt(localStorage.getItem('currentCalories')) || 0;
@@ -39,14 +41,15 @@ function App() {
       let totalPercentage = 0;
       let totalGoals = 0;
       
-      // 1. Cálculo do progresso das atividades
-      if (activities.length > 0) {
-          const completedActivities = activities.filter(act => act.completed).length;
-          const activitiesProgress = (completedActivities / activities.length) * 100;
+      // 1. Cálculo do progresso das atividades do HourlyPlanner
+      const activitiesList = Object.values(hourlyActivities);
+      if (activitiesList.length > 0) {
+          const completedActivities = activitiesList.filter(act => act.isCompleted).length;
+          const activitiesProgress = (completedActivities / activitiesList.length) * 100;
           totalPercentage += activitiesProgress;
           totalGoals++;
       }
-      
+
       // 2. Cálculo do progresso da água
       if (dailyGoals.waterGoal > 0) {
           const waterProgress = Math.min(100, (currentWater / dailyGoals.waterGoal) * 100);
@@ -71,6 +74,7 @@ function App() {
 
   const handleNewDay = () => {
       localStorage.clear();
+      // Emite um evento para que todos os componentes saibam que os dados foram apagados
       window.dispatchEvent(new Event('localStorageUpdated'));
   };
 
@@ -86,14 +90,13 @@ function App() {
         <div className="left-column">
           <NutritionTracker />
           <ProgressTracker totalProgress={totalProgress} />
+          <StatisticsDashboard /> {/* Adicionando o novo painel de estatísticas */}
         </div>
         <div className="right-column">
-          <ActivityList />
+          <HourlyPlanner />
         </div>
       </main>
-      <footer>
-        <p>&copy; 2024 My Daily Organizer</p>
-      </footer>
+      <Footer />
     </div>
   );
 }
